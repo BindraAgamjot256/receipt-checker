@@ -15,6 +15,7 @@ export default function ReceiptCard({ receipt, isAdmin, onIssue }: ReceiptCardPr
           {receipt.isIssued ? (
             <div className="mt-2 text-sm">
               <p><span className="font-semibold">Student:</span> {receipt.studentName}</p>
+              {receipt.section && <p><span className="font-semibold">Section:</span> {receipt.section}</p>}
               <p><span className="font-semibold">Issued By:</span> {receipt.issuingStudentName}</p>
               <p><span className="font-semibold">Date:</span> {new Date(receipt.issuedAt!).toLocaleDateString()}</p>
               <p><span className="font-semibold">Time:</span> {new Date(receipt.issuedAt!).toLocaleTimeString()}</p>

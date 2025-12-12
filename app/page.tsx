@@ -30,12 +30,13 @@ export default function Home() {
     return () => unsubscribe();
   }, []);
 
-  const handleIssue = async (studentName: string) => {
+  const handleIssue = async (studentName: string, section: string) => {
     if (!selectedReceipt || !issuerName) return;
 
     const receiptRef = doc(db, 'receipts', selectedReceipt.id);
     await updateDoc(receiptRef, {
       studentName,
+      section,
       issuingStudentName: issuerName,
       issuedAt: new Date().toISOString(),
       isIssued: true
@@ -62,6 +63,7 @@ export default function Home() {
         receiptId: i,
         isIssued: false,
         studentName: null,
+        section: null,
         issuingStudentName: null,
         issuedAt: null
       });
