@@ -9,7 +9,7 @@ interface ReceiptCardProps {
 export default function ReceiptCard({ receipt, isAdmin, onIssue }: ReceiptCardProps) {
   return (
     <div className={`p-4 border rounded shadow-sm ${receipt.isIssued ? 'bg-green-50 border-green-200' : 'bg-white'}`}>
-      <div className="flex justify-between items-start">
+      <div className="flex justify-between items-start text-gray-700">
         <div>
           <h3 className="font-bold text-lg">Receipt #{receipt.receiptId}</h3>
           {receipt.isIssued ? (
