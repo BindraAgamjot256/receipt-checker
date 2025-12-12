@@ -148,6 +148,7 @@ export default function Home() {
           </>
         )}
       </div>
+      <div className="text-center bottom-0 text-gray-600"><p>Made with ❤️ by Agamjot Singh Bindra</p></div>
 
       <IssueModal
         isOpen={!!selectedReceipt}
