@@ -7,6 +7,9 @@ interface ReceiptCardProps {
 }
 
 export default function ReceiptCard({ receipt, isAdmin, onIssue }: ReceiptCardProps) {
+  if (!isAdmin && !receipt.isIssued) {
+    return null;
+  }
   return (
     <div className={`p-4 border rounded shadow-sm ${receipt.isIssued ? 'bg-green-50 border-green-200' : 'bg-white'}`}>
       <div className="flex justify-between items-start text-gray-700">

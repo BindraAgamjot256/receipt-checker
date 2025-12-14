@@ -21,7 +21,7 @@ export default function Home() {
     
     const q = isAdmin
       ? query(collection(db, 'receipts'), orderBy('receiptId'))
-      : query(collection(db, 'receipts'), where('isIssued', '==', true), orderBy('receiptId'));
+      : query(collection(db, 'receipts'), orderBy('receiptId'));
     
     const unsubscribe = onSnapshot(q, (snapshot) => {
       const receiptsData: Receipt[] = [];
