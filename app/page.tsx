@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { collection, query, orderBy, onSnapshot, doc, updateDoc, writeBatch, getDocs } from 'firebase/firestore';
+import { collection, query, where, orderBy, onSnapshot, doc, updateDoc, writeBatch, getDocs } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { Receipt } from './types';
 import { useAdmin } from './hooks/useAdmin';
@@ -17,7 +17,12 @@ export default function Home() {
   const [selectedReceipt, setSelectedReceipt] = useState<Receipt | null>(null);
 
   useEffect(() => {
-    const q = query(collection(db, 'receipts'), orderBy('receiptId'));
+    if (!isLoaded) return;
+    
+    const q = isAdmin
+      ? query(collection(db, 'receipts'), orderBy('receiptId'))
+      : query(collection(db, 'receipts'), where('isIssued', '==', true), orderBy('receiptId'));
+    
     const unsubscribe = onSnapshot(q, (snapshot) => {
       const receiptsData: Receipt[] = [];
       snapshot.forEach((doc) => {
@@ -28,7 +33,7 @@ export default function Home() {
     });
 
     return () => unsubscribe();
-  }, []);
+  }, [isAdmin, isLoaded]);
 
   const handleIssue = async (studentName: string, section: string) => {
     if (!selectedReceipt || !issuerName) return;
