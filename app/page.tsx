@@ -117,7 +117,7 @@ export default function Home() {
     }
 
     const batch = writeBatch(db);
-    for (let i = 1; i <= 51; i++) {
+    for (let i = 1; i <= 101; i++) {
       batch.set(doc(receiptsRef), {
         receiptId: i,
         isIssued: false,
