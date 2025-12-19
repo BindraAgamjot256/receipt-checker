@@ -3,7 +3,7 @@ import { Receipt } from '../types';
 
 export async function generateReceiptPdf(receipt: Receipt): Promise<void> {
   // Fetch the template PDF
-  const templateUrl = '/Yearbook Receipts.pdf';
+  const templateUrl = './Yearbook Receipts.pdf';
   const templateBytes = await fetch(templateUrl).then((res) => res.arrayBuffer());
 
   // Load the PDF document
