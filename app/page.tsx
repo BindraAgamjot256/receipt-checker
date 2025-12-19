@@ -213,14 +213,14 @@ export default function Home() {
 
         <div className="mx-auto max-w-6xl p-4">
           {/* Important Notice Box */}
-          <div className="mb-4 rounded border-l-4 border-red-600 bg-red-50 p-4 shadow">
-            <p className="font-bold text-red-800">
-              Please note that, following the upgradation of the verification system to a digital receipt and record-based process, any physical (hard copy) receipts issued, if any, shall be treated as null and void. Final verification will be carried out solely on the basis of the official digital records maintained by the Student Council.
-            </p>
-          </div>
 
           {!isAdmin && (
               <>
+                <div className="mb-4 rounded border-l-4 border-red-600 bg-red-50 p-4 shadow">
+                  <p className="font-bold text-red-800">
+                    Please note that, following the upgradation of the verification system to a digital receipt and record-based process, any physical (hard copy) receipts issued, if any, shall be treated as null and void. Final verification will be carried out solely on the basis of the official digital records maintained by the Student Council.
+                  </p>
+                </div>
                 {showLogin && (
                     <div
                         className="fixed inset-0 z-50 flex items-center justify-center bg-black/40"
