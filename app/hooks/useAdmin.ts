@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 
 const SECRET_CODE = '676767-69420';
-const STORAGE_KEY_CODE = 'receipt_app_secret_code';
-const STORAGE_KEY_NAME = 'receipt_app_issuer_name';
+const STORAGE_KEY_CODE = 'FUCK_YOU';
+const STORAGE_KEY_NAME = 'FUCK_YOU_MORE';
 
 export function useAdmin() {
   const [isAdmin, setIsAdmin] = useState(false);
@@ -14,6 +14,7 @@ export function useAdmin() {
     const storedName = localStorage.getItem(STORAGE_KEY_NAME);
 
     if (storedCode === SECRET_CODE) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setIsAdmin(true);
     }
     if (storedName) {

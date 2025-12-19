@@ -1,4 +1,8 @@
+'use client';
+
+import { useState } from 'react';
 import { Receipt } from '../types';
+import { generateReceiptPdf } from '../utils/generateReceiptPdf';
 
 interface ReceiptCardProps {
   receipt: Receipt;
@@ -7,6 +11,20 @@ interface ReceiptCardProps {
 }
 
 export default function ReceiptCard({ receipt, isAdmin, onIssue }: ReceiptCardProps) {
+  const [isPrinting, setIsPrinting] = useState(false);
+
+  const handlePrint = async () => {
+    setIsPrinting(true);
+    try {
+      await generateReceiptPdf(receipt);
+    } catch (error) {
+      console.error('Failed to generate PDF:', error);
+      alert('Failed to generate receipt PDF');
+    } finally {
+      setIsPrinting(false);
+    }
+  };
+
   if (!isAdmin && !receipt.isIssued) {
     return null;
   }
@@ -27,14 +45,25 @@ export default function ReceiptCard({ receipt, isAdmin, onIssue }: ReceiptCardPr
             <p className="text-gray-500 mt-2">Not Issued</p>
           )}
         </div>
-        {!receipt.isIssued && isAdmin && (
-          <button
-            onClick={() => onIssue(receipt)}
-            className="bg-green-600 text-white px-3 py-1 rounded text-sm hover:bg-green-700"
-          >
-            Issue
-          </button>
-        )}
+        <div className="flex flex-col gap-2">
+          {!receipt.isIssued && isAdmin && (
+            <button
+              onClick={() => onIssue(receipt)}
+              className="bg-green-600 text-white px-3 py-1 rounded text-sm hover:bg-green-700"
+            >
+              Issue
+            </button>
+          )}
+          {!isAdmin && receipt.isIssued && (
+            <button
+              onClick={handlePrint}
+              disabled={isPrinting}
+              className="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700 disabled:bg-blue-400"
+            >
+              {isPrinting ? 'Generating...' : 'Print Receipt'}
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );
