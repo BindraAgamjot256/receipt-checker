@@ -74,6 +74,7 @@ export async function generateReceiptPdf(receipt: Receipt): Promise<void> {
 
   // Serialize and Open
   const pdfBytes = await pdfDoc.save();
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const blob = new Blob([pdfBytes], { type: 'application/pdf' });
   const url = URL.createObjectURL(blob);
