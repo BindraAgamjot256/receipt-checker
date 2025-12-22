@@ -360,6 +360,7 @@ export default function Home() {
             onClose={() => setSelectedReceipt(null)}
             onSubmit={handleIssue}
             receiptId={selectedReceipt?.receiptId ?? null}
+            allReceipts={receipts}
         />
       </main>
   );
