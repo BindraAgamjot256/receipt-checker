@@ -47,16 +47,22 @@ export default function ReceiptCard({ receipt, isAdmin, onIssue, allReceipts = [
   
   const hasDuplicates = duplicateReceipts.length > 0;
   
+  const cardClassName = `p-4 border rounded shadow-sm ${
+    receipt.isIssued ? 'bg-green-50 border-green-200' : 'bg-white'
+  } ${hasDuplicates ? 'border-yellow-500 border-2' : ''}`;
+  
   return (
-    <div className={`p-4 border rounded shadow-sm ${receipt.isIssued ? 'bg-green-50 border-green-200' : 'bg-white'} ${hasDuplicates ? 'border-yellow-500 border-2' : ''}`}>
+    <div className={cardClassName}>
       {hasDuplicates && (
         <div className="mb-2 p-2 bg-yellow-100 border border-yellow-400 rounded text-xs">
           <p className="font-semibold text-yellow-800">⚠️ Duplicate Detected</p>
           <p className="text-yellow-700">
             {duplicateReceipts.length} other receipt{duplicateReceipts.length > 1 ? 's' : ''} issued to {receipt.studentName}:
-            {duplicateReceipts.map((dup) => (
-              <span key={dup.id} className="ml-1 font-medium">
-                {formatReceiptId(dup.receiptId)}
+            {' '}
+            {duplicateReceipts.map((dup, index) => (
+              <span key={dup.id}>
+                {index > 0 && ', '}
+                <span className="font-medium">{formatReceiptId(dup.receiptId)}</span>
               </span>
             ))}
           </p>
