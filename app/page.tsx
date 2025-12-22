@@ -316,6 +316,7 @@ export default function Home() {
                               receipt={receipt}
                               isAdmin={isAdmin}
                               onIssue={setSelectedReceipt}
+                              allReceipts={receipts}
                           />
                       ))}
                     </div>
@@ -342,6 +343,7 @@ export default function Home() {
                                 receipt={receipt}
                                 isAdmin={isAdmin}
                                 onIssue={setSelectedReceipt}
+                                allReceipts={receipts}
                             />
                         ))}
                       </div>
