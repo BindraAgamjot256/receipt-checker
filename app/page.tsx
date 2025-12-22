@@ -316,6 +316,7 @@ export default function Home() {
                               receipt={receipt}
                               isAdmin={isAdmin}
                               onIssue={setSelectedReceipt}
+                              allReceipts={receipts}
                           />
                       ))}
                     </div>
@@ -342,6 +343,7 @@ export default function Home() {
                                 receipt={receipt}
                                 isAdmin={isAdmin}
                                 onIssue={setSelectedReceipt}
+                                allReceipts={receipts}
                             />
                         ))}
                       </div>
@@ -360,6 +362,7 @@ export default function Home() {
             onClose={() => setSelectedReceipt(null)}
             onSubmit={handleIssue}
             receiptId={selectedReceipt?.receiptId ?? null}
+            allReceipts={receipts}
         />
       </main>
   );
