@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Receipt } from '../types';
 import { generateReceiptPdf } from '../utils/generateReceiptPdf';
+import { formatReceiptId } from '../utils/formatReceiptId';
 
 interface ReceiptCardProps {
   receipt: Receipt;
@@ -32,7 +33,7 @@ export default function ReceiptCard({ receipt, isAdmin, onIssue }: ReceiptCardPr
     <div className={`p-4 border rounded shadow-sm ${receipt.isIssued ? 'bg-green-50 border-green-200' : 'bg-white'}`}>
       <div className="flex justify-between items-start text-gray-700">
         <div>
-          <h3 className="font-bold text-lg">Receipt YB25-{receipt.receiptId < 10 ? "00" : null}{(receipt.receiptId > 10 && receipt.receiptId < 100) ? "0" : null}{receipt.receiptId}</h3>
+          <h3 className="font-bold text-lg">Receipt {formatReceiptId(receipt.receiptId)}</h3>
           {receipt.isIssued ? (
             <div className="mt-2 text-sm">
               <p><span className="font-semibold">Student:</span> {receipt.studentName}</p>

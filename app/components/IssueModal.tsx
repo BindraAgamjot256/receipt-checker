@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react';
 import { Receipt } from '../types';
+import { formatReceiptId } from '../utils/formatReceiptId';
 
 interface IssueModalProps {
   isOpen: boolean;
@@ -61,7 +62,7 @@ export default function IssueModal({ isOpen, onClose, onSubmit, receiptId, allRe
           <div className="mb-4 p-3 bg-yellow-50 border border-yellow-200 rounded">
             <p className="text-sm font-semibold text-yellow-800 mb-1">⚠️ Duplicate Detected</p>
             <p className="text-xs text-yellow-700">
-              A receipt (YB25-{duplicateReceipt.receiptId < 10 ? "00" : ""}{(duplicateReceipt.receiptId > 10 && duplicateReceipt.receiptId < 100) ? "0" : ""}{duplicateReceipt.receiptId}) 
+              A receipt ({formatReceiptId(duplicateReceipt.receiptId)}) 
               has already been issued to <strong>{duplicateReceipt.studentName}</strong> in section <strong>{duplicateReceipt.section}</strong>.
             </p>
           </div>
@@ -71,7 +72,7 @@ export default function IssueModal({ isOpen, onClose, onSubmit, receiptId, allRe
           <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded">
             <p className="text-sm font-semibold text-red-800 mb-1">⚠️ Confirm Duplicate Issue</p>
             <p className="text-xs text-red-700">
-              Are you sure you want to issue another receipt to this student? This should only be done if it&apos;s a different student with the same name.
+              Are you sure you want to issue another receipt to this student? This should only be done if it&rsquo;s a different student with the same name.
             </p>
           </div>
         )}
