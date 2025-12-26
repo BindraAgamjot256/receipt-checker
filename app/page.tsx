@@ -118,6 +118,16 @@ export default function Home() {
       });
 
       console.log('Receipt marked as used:', receipt.id);
+
+      const q = query(collection(db, 'receipts'), orderBy('receiptId'));
+      const unsubscribe = onSnapshot(q, (snapshot) => {
+        const data: Receipt[] = snapshot.docs.map(
+            (d) => ({ id: d.id, ...d.data() } as Receipt)
+        );
+        setReceipts(data);
+        setLoading(false);
+      });
+      unsubscribe();
     } catch (error) {
       console.error('Failed to update receipt:', error);
     }
@@ -381,6 +391,7 @@ export default function Home() {
             onClose={() => setSelectedReceipt(null)}
             onSubmit={handleIssue}
             receiptId={selectedReceipt?.receiptId ?? null}
+            allReceipts={receipts}
         />
       </main>
   );
