@@ -104,6 +104,25 @@ export default function Home() {
     setSelectedReceipt(null);
   };
 
+  const handleReceive = async (receipt: Receipt) => {
+    if (!issuerName) return;
+    if (!confirm(`Mark receipt for "${receipt.studentName}" as used by ${issuerName}?`)) return;
+
+    try {
+      const receiptRef = doc(db, 'receipts', receipt.id);
+
+      await updateDoc(receiptRef, {
+        used: true,
+        receivingStudentName: issuerName,
+        receivedAt: new Date().toISOString(),
+      });
+
+      console.log('Receipt marked as used:', receipt.id);
+    } catch (error) {
+      console.error('Failed to update receipt:', error);
+    }
+  };
+
   const initializeDatabase = async () => {
     setLoading(true);
 
@@ -316,6 +335,7 @@ export default function Home() {
                               receipt={receipt}
                               isAdmin={isAdmin}
                               onIssue={setSelectedReceipt}
+                              onReceive={handleReceive}
                           />
                       ))}
                     </div>
@@ -342,6 +362,7 @@ export default function Home() {
                                 receipt={receipt}
                                 isAdmin={isAdmin}
                                 onIssue={setSelectedReceipt}
+                                onReceive={handleReceive}
                             />
                         ))}
                       </div>

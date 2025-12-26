@@ -6,4 +6,7 @@ export interface Receipt {
   issuingStudentName?: string;
   issuedAt?: string; // ISO string
   isIssued: boolean;
+  used?: boolean;
+  usedBy?: string;
+  usedAt?: string;
 }

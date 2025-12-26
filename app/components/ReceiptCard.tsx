@@ -8,9 +8,10 @@ interface ReceiptCardProps {
   receipt: Receipt;
   isAdmin: boolean;
   onIssue: (receipt: Receipt) => void;
+  onReceive: (receipt: Receipt) => void;
 }
 
-export default function ReceiptCard({ receipt, isAdmin, onIssue }: ReceiptCardProps) {
+export default function ReceiptCard({ receipt, isAdmin, onIssue, onReceive }: ReceiptCardProps) {
   const [isPrinting, setIsPrinting] = useState(false);
 
   const handlePrint = async () => {
@@ -40,6 +41,8 @@ export default function ReceiptCard({ receipt, isAdmin, onIssue }: ReceiptCardPr
               <p><span className="font-semibold">Issued By:</span> {receipt.issuingStudentName}</p>
               <p><span className="font-semibold">Date:</span> {new Date(receipt.issuedAt!).toLocaleDateString()}</p>
               <p><span className="font-semibold">Time:</span> {new Date(receipt.issuedAt!).toLocaleTimeString()}</p>
+              {receipt.used && <p><span className="font-semibold">Yearbook given by:</span> {receipt.usedBy!}</p>}
+              {receipt.used && <p><span className="font-semibold">Yearbook given at:</span> {new Date(receipt.usedAt!).toLocaleString()}</p>}
             </div>
           ) : (
             <p className="text-gray-500 mt-2">Not Issued</p>
@@ -53,6 +56,14 @@ export default function ReceiptCard({ receipt, isAdmin, onIssue }: ReceiptCardPr
             >
               Issue
             </button>
+          )}
+          {receipt.isIssued && isAdmin && !receipt.used && (
+              <button onClick={() => onReceive(receipt)} className="bg-red-600 text-white px-3 py-1 rounded text-sm hover:bg-red-700">
+                Received
+              </button>
+          )}
+          {receipt.isIssued && isAdmin && receipt.used && (
+              <span className="text-green-600 text-sm font-semibold">✓ Used</span>
           )}
           {!isAdmin && receipt.isIssued && (
             <button
