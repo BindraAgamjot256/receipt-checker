@@ -30,7 +30,7 @@ export default function ReceiptCard({ receipt, isAdmin, onIssue, onReceive }: Re
     return null;
   }
   return (
-    <div className={`p-4 border rounded shadow-sm ${receipt.isIssued ? 'bg-green-50 border-green-200' : 'bg-white'}`}>
+    <div className={`p-4 border rounded shadow-sm ${receipt.used ? 'bg-red-50 border-red-200' : receipt.isIssued ? 'bg-green-50 border-green-200' : 'bg-white'}`}>
       <div className="flex justify-between items-start text-gray-700">
         <div>
           <h3 className="font-bold text-lg">Receipt YB25-{receipt.receiptId < 10 ? "00" : null}{(receipt.receiptId > 10 && receipt.receiptId < 100) ? "0" : null}{receipt.receiptId}</h3>
@@ -41,8 +41,8 @@ export default function ReceiptCard({ receipt, isAdmin, onIssue, onReceive }: Re
               <p><span className="font-semibold">Issued By:</span> {receipt.issuingStudentName}</p>
               <p><span className="font-semibold">Date:</span> {new Date(receipt.issuedAt!).toLocaleDateString()}</p>
               <p><span className="font-semibold">Time:</span> {new Date(receipt.issuedAt!).toLocaleTimeString()}</p>
-              {receipt.used && <p><span className="font-semibold">Yearbook given by:</span> {receipt.usedBy!}</p>}
-              {receipt.used && <p><span className="font-semibold">Yearbook given at:</span> {new Date(receipt.usedAt!).toLocaleString()}</p>}
+              {receipt.used && <p><span className="font-semibold">Yearbook given by:</span> {receipt.receivingStudentName}</p>}
+              {receipt.used && <p><span className="font-semibold">Yearbook given at:</span> {new Date(receipt.receivedAt!).toLocaleString()}</p>}
             </div>
           ) : (
             <p className="text-gray-500 mt-2">Not Issued</p>
