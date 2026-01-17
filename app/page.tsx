@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import confetti from 'canvas-confetti';
 import {
   collection,
   query,
@@ -32,6 +33,7 @@ export default function Home() {
 
   const [search, setSearch] = useState('');
   const [searchByKid, setSearchByKid] = useState(true);
+  const [entriesToAdd, setEntriesToAdd] = useState<number>(10);
 
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [allNames, setAllNames] = useState<string[]>([]);
@@ -101,6 +103,15 @@ export default function Home() {
       isIssued: true,
     });
 
+    // Trigger confetti for receipt 67
+    if (selectedReceipt.receiptId === 67) {
+      confetti({
+        particleCount: 150,
+        spread: 70,
+        origin: { y: 0.6 },
+      });
+    }
+
     setSelectedReceipt(null);
   };
 
@@ -149,6 +160,37 @@ export default function Home() {
     for (let i = 1; i <= 101; i++) {
       batch.set(doc(receiptsRef), {
         receiptId: i,
+        isIssued: false,
+        studentName: null,
+        section: null,
+        issuingStudentName: null,
+        issuedAt: null,
+      });
+    }
+
+    await batch.commit();
+    setLoading(false);
+  };
+
+  const addEntries = async () => {
+    if (entriesToAdd <= 0) {
+      alert('Please enter a valid number of entries');
+      return;
+    }
+
+    setLoading(true);
+
+    const receiptsRef = collection(db, 'receipts');
+    const snapshot = await getDocs(receiptsRef);
+    const maxReceiptId = snapshot.docs.reduce((max, d) => {
+      const receiptId = d.data().receiptId ?? 0;
+      return receiptId > max ? receiptId : max;
+    }, 0);
+
+    const batch = writeBatch(db);
+    for (let i = 1; i <= entriesToAdd; i++) {
+      batch.set(doc(receiptsRef), {
+        receiptId: maxReceiptId + i,
         isIssued: false,
         studentName: null,
         section: null,
@@ -227,6 +269,25 @@ export default function Home() {
                       >
                         Initialize DB
                       </button>
+                  )}
+
+                  {receipts.length > 0 && (
+                      <div className="flex items-center gap-2">
+                        <input
+                            type="number"
+                            min="1"
+                            value={entriesToAdd}
+                            onChange={(e) => setEntriesToAdd(Math.max(1, parseInt(e.target.value) || 1))}
+                            className="w-20 rounded border px-2 py-1 text-sm text-black"
+                            placeholder="N"
+                        />
+                        <button
+                            onClick={addEntries}
+                            className="rounded bg-green-500 px-3 py-1 text-sm font-semibold text-white hover:bg-green-400"
+                        >
+                          Add Entries
+                        </button>
+                      </div>
                   )}
                 </div>
             ) : (
