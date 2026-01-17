@@ -5,7 +5,7 @@ import { formatReceiptId } from '../utils/formatReceiptId';
 interface IssueModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (studentName: string, section: string) => void;
+  onSubmit: (studentName: string, section: string, email?: string) => void;
   receiptId: number | null;
   allReceipts: Receipt[];
 }
@@ -13,6 +13,7 @@ interface IssueModalProps {
 export default function IssueModal({ isOpen, onClose, onSubmit, receiptId, allReceipts }: IssueModalProps) {
   const [studentName, setStudentName] = useState('');
   const [section, setSection] = useState('XII-A');
+  const [email, setEmail] = useState('');
   const [showConfirmation, setShowConfirmation] = useState(false);
 
   // Check for duplicates using useMemo instead of useEffect
@@ -45,9 +46,10 @@ export default function IssueModal({ isOpen, onClose, onSubmit, receiptId, allRe
       return;
     }
 
-    onSubmit(studentName, section);
+    onSubmit(studentName, section, email || undefined);
     setStudentName('');
     setSection('XII-A');
+    setEmail('');
     setShowConfirmation(false);
   };
 
@@ -100,6 +102,16 @@ export default function IssueModal({ isOpen, onClose, onSubmit, receiptId, allRe
                 <option key={s} value={s}>{s}</option>
               ))}
             </select>
+          </div>
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700 mb-1">Email (optional - for receipt delivery)</label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full border rounded p-2"
+              placeholder="student@example.com"
+            />
           </div>
           <div className="flex justify-end space-x-2">
             <button

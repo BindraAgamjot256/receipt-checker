@@ -90,18 +90,46 @@ export default function Home() {
     setSuggestions(matches.slice(0, 5));
   }, [search, searchByKid, allNames]);
 
-  const handleIssue = async (studentName: string, section: string) => {
+  const handleIssue = async (studentName: string, section: string, email?: string) => {
     if (!selectedReceipt || !issuerName) return;
 
     const receiptRef = doc(db, 'receipts', selectedReceipt.id);
+    const issuedAt = new Date().toISOString();
 
     await updateDoc(receiptRef, {
       studentName,
       section,
       issuingStudentName: issuerName,
-      issuedAt: new Date().toISOString(),
+      issuedAt,
       isIssued: true,
     });
+
+    // Send email if provided
+    if (email) {
+      try {
+        const response = await fetch('/api/send-receipt', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            receipt: {
+              receiptId: selectedReceipt.receiptId,
+              studentName,
+              section,
+              issuedAt,
+            },
+            recipientEmail: email,
+          }),
+        });
+
+        if (!response.ok) {
+          console.error('Failed to send email');
+          alert('Receipt issued but email failed to send');
+        }
+      } catch (error) {
+        console.error('Email error:', error);
+        alert('Receipt issued but email failed to send');
+      }
+    }
 
     // Trigger confetti for receipt 67
     if (selectedReceipt.receiptId === 67) {
