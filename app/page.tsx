@@ -107,7 +107,7 @@ export default function Home() {
     // Send email if provided
     if (email) {
       try {
-        const response = await fetch('/api/send-receipt', {
+        const response = await fetch('./api/send-receipt', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
